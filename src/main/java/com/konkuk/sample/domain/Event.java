@@ -17,12 +17,18 @@ public class Event {
 
     private boolean firstRemit; // 첫 송금
 
-    private boolean share; // 친구에게 앱 공유하기
+    private boolean firstShare; // 친구에게 앱 공유하기
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id") // Event 테이블에서 외래키 이름 생성
     private Member member; // 회원
 
     /** 생성 메서드 */
-
+    public static Event createEvent(){
+        Event event = new Event();
+        event.setFirstDeposit(false);
+        event.setFirstRemit(false);
+        event.setFirstShare(false);
+        return event;
+    }
 }

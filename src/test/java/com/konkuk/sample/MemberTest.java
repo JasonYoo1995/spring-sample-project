@@ -1,4 +1,4 @@
-package com.konkuk.sample.service_repository;
+package com.konkuk.sample;
 
 import com.konkuk.sample.domain.Member;
 import com.konkuk.sample.domain.MemberToMember;
@@ -27,6 +27,7 @@ public class MemberTest {
 	@Test
 	@Rollback(true)
 	// 생년월일과 이름을 입력하여 회원 가입
+	// 특정 회원을 조회
 	public void createAndReadOneTestInMemberRepository() {
 		// GIVEN
 		Member createMember = Member.createMember("990909", "김건국");
@@ -107,6 +108,4 @@ public class MemberTest {
 		Assertions.assertThat(frequentMemberList.get(0)).isEqualTo(registeredMember1);
 		Assertions.assertThat(frequentMemberList.get(1)).isEqualTo(registeredMember2);
 	}
-
-
 }

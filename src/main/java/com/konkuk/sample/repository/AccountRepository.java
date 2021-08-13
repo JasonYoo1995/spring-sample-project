@@ -16,6 +16,13 @@ public class AccountRepository {
         return em.find(Account.class, accountId);
     }
 
+    public Account readOneByAccountNumber(String accountNumber){
+        return em.createQuery("select a from Account a" +
+                        " where a.accountNumber = :accountNumber", Account.class)
+                .setParameter("accountNumber", accountNumber)
+                .getSingleResult(); // JPQL
+    }
+
     public List<Account> readAllByMember(Long memberId) {
         return em.createQuery("select a from Account a inner join a.member m" +
                 " where m.id = :memberId", Account.class)

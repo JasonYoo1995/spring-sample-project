@@ -1,9 +1,13 @@
-package com.konkuk.sample.service_repository;
+package com.konkuk.sample;
 
 import com.konkuk.sample.domain.Account;
 import com.konkuk.sample.domain.Member;
+import com.konkuk.sample.domain.Remit;
+import com.konkuk.sample.domain.RemitType;
 import com.konkuk.sample.repository.AccountRepository;
 import com.konkuk.sample.repository.MemberRepository;
+import com.konkuk.sample.repository.RemitRepository;
+import com.konkuk.sample.service.AccountService;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +26,11 @@ public class AccountTest {
 	@Autowired
 	AccountRepository accountRepository;
 	@Autowired
+	AccountService accountService;
+	@Autowired
 	MemberRepository memberRepository;
+	@Autowired
+	RemitRepository remitRepository;
 
 	@Test
 	@Rollback(true)
@@ -123,5 +131,91 @@ public class AccountTest {
 		// THEN
 		Assertions.assertThat(balanceList.get(0)).isEqualTo(1000000L);
 		Assertions.assertThat(balanceList.get(1)).isEqualTo(300000L);
+	}
+
+	@Test
+	@Rollback(true)
+	// 특정 계좌에 대하여 모든 입출금 내역 출력
+	public void getRemitListTestInAccountService(){
+		// GIVEN
+		Account account = Account.createAccount("신한", "110-123-456789", 1000000L, null);
+		Long accountId = accountRepository.create(account);
+		Remit remit1 = Remit.createRemit(RemitType.DEPOSIT, 10000L, "송금 테스트 1", account);
+		Remit remit2 = Remit.createRemit(RemitType.WITHDRAW, 2000L, "송금 테스트 2", account);
+		remitRepository.create(remit1);
+		remitRepository.create(remit2);
+
+		// WHEN
+		List<Remit> remitList = accountService.getRemitList(accountId);
+
+		// THEN
+		Assertions.assertThat(remitList.get(0)).isEqualTo(remit1);
+		Assertions.assertThat(remitList.get(1)).isEqualTo(remit2);
+	}
+
+	@Test
+	@Rollback(true)
+	// 특정 계좌에 대하여 입금 내역만 출력
+	public void getDepositListTestInAccountService(){
+		// GIVEN
+		Account account = Account.createAccount("신한", "110-123-456789", 1000000L, null);
+		Long accountId = accountRepository.create(account);
+		Remit depositRemit1 = Remit.createRemit(RemitType.DEPOSIT, 30000L, "입금1", account);
+		Remit depositRemit2 = Remit.createRemit(RemitType.DEPOSIT, 50000L, "입금2", account);
+		Remit withdrawRemit = Remit.createRemit(RemitType.WITHDRAW, 2000L, "출금", account);
+		remitRepository.create(depositRemit1);
+		remitRepository.create(depositRemit2);
+		remitRepository.create(withdrawRemit);
+
+		// WHEN
+		List<Remit> remitList = accountService.getDepositList(accountId);
+
+		// THEN
+		Assertions.assertThat(remitList.size()).isEqualTo(2);
+		Assertions.assertThat(remitList.get(0)).isEqualTo(depositRemit1);
+		Assertions.assertThat(remitList.get(1)).isEqualTo(depositRemit2);
+	}
+
+	@Test
+	@Rollback(true)
+	// 특정 계좌에 대하여 출금 내역만 출력
+	public void getWithdrawListTestInAccountService(){
+		// GIVEN
+		Account account = Account.createAccount("신한", "110-123-456789", 1000000L, null);
+		Long accountId = accountRepository.create(account);
+		Remit depositRemit = Remit.createRemit(RemitType.DEPOSIT, 30000L, "입금", account);
+		Remit withdrawRemit1 = Remit.createRemit(RemitType.WITHDRAW, 5000L, "출금1", account);
+		Remit withdrawRemit2 = Remit.createRemit(RemitType.WITHDRAW, 2000L, "출금2", account);
+		remitRepository.create(depositRemit);
+		remitRepository.create(withdrawRemit1);
+		remitRepository.create(withdrawRemit2);
+
+		// WHEN
+		List<Remit> remitList = accountService.getWithdrawList(accountId);
+
+		// THEN
+		Assertions.assertThat(remitList.size()).isEqualTo(2);
+		Assertions.assertThat(remitList.get(0)).isEqualTo(withdrawRemit1);
+		Assertions.assertThat(remitList.get(1)).isEqualTo(withdrawRemit2);
+	}
+
+	@Test
+	@Rollback(true)
+	// 송금
+	public void remitTestInAccountService(){
+		// GIVEN
+		Account fromAccount = Account.createAccount("신한", "110-123-456789", 10000L, null);
+		Account toAccount = Account.createAccount("신한", "110-123-000000", 50000L, null);
+		Long fromAccountId = accountRepository.create(fromAccount);
+		accountRepository.create(toAccount);
+
+		// WHEN
+		accountService.remit(fromAccountId, "110-123-000000", 888L, "송금 테스트");
+
+		// THEN
+		Assertions.assertThat(fromAccount.getBalanceByAccount()).isEqualTo(10000L-888L);
+		Assertions.assertThat(toAccount.getBalanceByAccount()).isEqualTo(50000L+888L);
+		Assertions.assertThat(fromAccount.getRemitList().get(0).getType()).isEqualTo(RemitType.WITHDRAW);
+		Assertions.assertThat(toAccount.getRemitList().get(0).getType()).isEqualTo(RemitType.DEPOSIT);
 	}
 }

@@ -28,4 +28,15 @@ public class Remit {
     private Account account; // 계좌
 
     /** 생성 메서드 */
+    public static Remit createRemit(RemitType type, Long money, String content, Account account){
+        Remit remit = new Remit();
+        remit.setType(type);
+        remit.setMoney(money);
+        remit.setContent(content);
+        remit.setDate(LocalDateTime.now());
+        remit.setAccount(account);
+        account.getRemitList().add(remit);
+        return remit;
+    }
+
 }
