@@ -1,5 +1,6 @@
 package com.konkuk.sample.service;
 
+import com.konkuk.sample.domain.Event;
 import com.konkuk.sample.domain.Member;
 import com.konkuk.sample.domain.MemberToMember;
 import com.konkuk.sample.repository.MemberRepository;
@@ -27,7 +28,8 @@ public class MemberService {
 
     // 생년월일과 이름을 입력하여 회원 가입
     public void signUp(String birth, String name){
-        Member member = Member.createMember(birth, name);
+        Event event = Event.createEvent();
+        Member member = Member.createMember(birth, name, event);
         memberRepository.create(member);
     }
 

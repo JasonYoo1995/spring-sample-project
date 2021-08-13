@@ -19,7 +19,7 @@ public class Member {
 
     private String name; // 회원 이름
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Event event; // 이벤트 참여
 
     @OneToMany(mappedBy = "member") // Account 클래스의 필드들 중, Account 테이블의 외래키에 대응되는 필드의 이름

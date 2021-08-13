@@ -19,7 +19,7 @@ public class Event {
 
     private boolean firstShare; // 친구에게 앱 공유하기
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id") // Event 테이블에서 외래키 이름 생성
     private Member member; // 회원
 

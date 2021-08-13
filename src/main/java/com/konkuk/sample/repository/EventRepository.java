@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class EventRepository {
@@ -16,6 +17,10 @@ public class EventRepository {
         return em.createQuery("select e from Event e where e.member = :member", Event.class)
                 .setParameter("member", member)
                 .getSingleResult(); // JPQL
+    }
+
+    public List<Event> readAll() {
+        return em.createQuery("select e from Event e", Event.class).getResultList(); // JPQL
     }
 
     public Long create(Event event){

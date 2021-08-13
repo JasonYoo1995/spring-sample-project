@@ -2,6 +2,7 @@ package com.konkuk.sample;
 
 import com.konkuk.sample.domain.Member;
 import com.konkuk.sample.domain.MemberToMember;
+import com.konkuk.sample.repository.EventRepository;
 import com.konkuk.sample.repository.MemberRepository;
 import com.konkuk.sample.service.MemberService;
 import org.assertj.core.api.Assertions;
@@ -23,6 +24,8 @@ public class MemberTest {
 	MemberService memberService;
 	@Autowired
 	MemberRepository memberRepository;
+	@Autowired
+	EventRepository eventRepository;
 
 	@Test
 	@Rollback(true)
@@ -41,6 +44,21 @@ public class MemberTest {
 		Assertions.assertThat(readMember.getBirth()).isEqualTo(createMember.getBirth());
 		Assertions.assertThat(readMember.getName()).isEqualTo(createMember.getName());
 		Assertions.assertThat(readMember).isEqualTo(createMember); // JPA 엔티티 동일성 보장
+	}
+
+	@Test
+	@Rollback(true)
+	// Member 회원 가입 시 Event도 함께 생성
+	public void signUpTestInMemberService() {
+		// GIVEN
+		String birth = "990909";
+		String name = "김건국";
+
+		// WHEN
+		memberService.signUp(birth, name);
+
+		// THEN
+		Assertions.assertThat(eventRepository.readAll().size()).isEqualTo(1);
 	}
 
 	@Test
