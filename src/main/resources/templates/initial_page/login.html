@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="jumbotron">
+        <div>
+            <h2 style="margin-bottom: 10px" >회원 가입</h2>
+            <a style="margin-bottom: 20px" class="btn btn-lg btn-secondary" href="/sign_up">가입하기</a>
+        </div>
+        <form th:action="@{/login}" th:object="${form}" method="post">
+            <h2>로그인</h2>
+            <div class="form-group">
+                <label th:for="name">회원 이름</label>
+                <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div>
+</body>
+</html>

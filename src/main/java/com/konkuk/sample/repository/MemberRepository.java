@@ -2,6 +2,7 @@ package com.konkuk.sample.repository;
 
 import com.konkuk.sample.domain.Member;
 import com.konkuk.sample.domain.MemberToMember;
+import com.konkuk.sample.exception.MemberNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,17 @@ public class MemberRepository {
 
     public Member readOne(Long id){
         return em.find(Member.class, id);
+    }
+    public Member readOneByName(String name){
+        try{
+            return em.createQuery("select m from Member m" +
+                        " where m.name = :name", Member.class)
+                .setParameter("name", name)
+                .getSingleResult();
+        }
+        catch (Exception e){
+            throw new MemberNotFoundException("해당되는 회원이 존재하지 않습니다.");
+        }
     }
 
     public List<Member> readAll() {

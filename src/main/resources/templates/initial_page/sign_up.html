@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+  <form style="margin-top: 10px;" th:action="@{/sign_up}" th:object="${form}" method="post">
+    <div class="form-group">
+      <label>이름</label>
+      <input type="text" th:field="*{name}" class="form-control" placeholder="예: 김건국">
+      <label style="margin-top: 10px;">생년월일</label>
+      <input type="text" th:field="*{birth}" class="form-control" placeholder="예: 011231 (6자리)">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <br/>
+  <div th:replace="fragments/footer :: footer" />
+</div>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.konkuk.sample;
 
 import com.konkuk.sample.domain.Member;
 import com.konkuk.sample.domain.MemberToMember;
+import com.konkuk.sample.exception.MemberNotFoundException;
 import com.konkuk.sample.repository.EventRepository;
 import com.konkuk.sample.repository.MemberRepository;
 import com.konkuk.sample.service.MemberService;
@@ -15,6 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -44,6 +47,26 @@ public class MemberTest {
 		Assertions.assertThat(readMember.getBirth()).isEqualTo(createMember.getBirth());
 		Assertions.assertThat(readMember.getName()).isEqualTo(createMember.getName());
 		Assertions.assertThat(readMember).isEqualTo(createMember); // JPA 엔티티 동일성 보장
+	}
+
+	@Test(expected = MemberNotFoundException.class)
+	@Rollback(true)
+	public void getMemberByNameInMemberService(){
+		// GIVEN
+		Member createMember = Member.createMember("990909", "김건국");
+		Long id = memberRepository.create(createMember);
+
+		// WHEN : 있는 회원 조회
+		Member existingMember = memberService.getMemberByName("김건국");
+
+		// THEN
+		Assertions.assertThat(existingMember).isNotNull();
+
+		// WHEN : 없는 회원 조회
+		Member notExistingMember = memberService.getMemberByName("나건국");
+
+		// THEN
+		fail("해당되는 회원이 존재하지 않습니다.");
 	}
 
 	@Test

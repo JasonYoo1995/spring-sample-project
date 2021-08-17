@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="jumbotron">
+        <h2>메뉴</h2>
+        <p class="lead">마이 페이지</p>
+        <p>
+            <a style="margin-right: 10px" class="btn btn-lg btn-secondary" href="/">회원 정보 수정</a>
+            <a class="btn btn-lg btn-secondary" href="/logout">로그아웃</a>
+        </p>
+        <p class="lead">송금 서비스</p>
+        <p>
+            <a class="btn btn-lg btn-dark" href="/">계좌 목록 보기</a>
+        </p>
+        <p class="lead">입금하기</p>
+        <p>
+            <a style="margin-right: 10px" class="btn btn-lg btn-info" href="/">ATM 사용</a>
+            <a class="btn btn-lg btn-info" href="/">이벤트 참여</a>
+        </p>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div>
+</body>
+</html>

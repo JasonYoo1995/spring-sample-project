@@ -21,6 +21,10 @@ public class MemberService {
         return memberRepository.readOne(memberId);
     }
 
+    public Member getMemberByName(String memberName){
+        return memberRepository.readOneByName(memberName);
+    }
+
     // 모든 회원 목록을 조회
     public List<Member> getAllMembers(){
         return memberRepository.readAll();
