@@ -1,4 +1,4 @@
-package com.konkuk.sample.controller;
+package com.konkuk.sample.form;
 
 import lombok.Getter;
 import lombok.Setter;
