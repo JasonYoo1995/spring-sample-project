@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <h2 style="margin-top: 20px; margin-bottom: 20px">계좌 목록</h2>
+    <div>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>은행</th>
+          <th>계좌 번호</th>
+          <th>잔액</th>
+          <th>내역 / 송금 / 삭제</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="account : ${accounts}">
+          <td th:text="${account.bankName}"></td>
+          <td th:text="${account.accountNumber}"></td>
+          <td th:text="${account.balance}"></td>
+          <td>
+            <a href="#" th:href="@{/account/retrieve/{id} (id=${account.id})}" class="btn btn-primary" role="button">내역</a>
+            <a href="#" th:href="@{/account/remit/{id} (id=${account.id})}" class="btn btn-success" role="button">송금</a>
+            <a href="#" th:href="@{/account/delete/{id} (id=${account.id})}" class="btn btn-danger" role="button">삭제</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="text-align: right" >
+      <a style="margin-right: 20px" class="btn btn-lg btn-dark" href="/account/create">새로운 계좌 추가</a>
+    </div>
+  <div th:replace="fragments/footer :: footer"/>
+</div>
+</body>
+</html>

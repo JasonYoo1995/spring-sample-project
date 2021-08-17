@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+        <h2 style="margin-top: 20px; margin-bottom: 20px">새로운 계좌 추가</h2>
+        <form th:object="${form}" method="post">
+            <div class="form-group">
+                <label>은행</label>
+                <input type="text" th:field="*{bankName}" class="form-control" placeholder="예: 신한" />
+            </div>
+            <div class="form-group">
+                <label>계좌 번호</label>
+                <input type="text" th:field="*{accountNumber}" class="form-control" placeholder="예: 110-382-777777" />
+            </div>
+            <div class="form-group">
+                <label>잔액</label>
+                <input type="number" th:field="*{balance}" class="form-control" placeholder="예: 100000" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    <div th:replace="fragments/footer :: footer" />
+</div>
+</body>
+</html>

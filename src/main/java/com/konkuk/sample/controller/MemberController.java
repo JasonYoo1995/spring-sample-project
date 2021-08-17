@@ -1,7 +1,7 @@
 package com.konkuk.sample.controller;
 
 import com.konkuk.sample.domain.Member;
-import com.konkuk.sample.form.MemberModifyForm;
+import com.konkuk.sample.form.MemberForm;
 import com.konkuk.sample.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,9 +18,9 @@ public class MemberController {
 
     @GetMapping(value = "/member_modify")
     public String memberModifyForm(HttpServletRequest request, Model model) {
-        MemberModifyForm form = new MemberModifyForm();
         Long id = (Long) request.getSession().getAttribute("memberId");
         Member member = memberService.getMember(id);
+        MemberForm form = new MemberForm();
         form.setName(member.getName());
         form.setBirth(member.getBirth());
         model.addAttribute("form", form);
@@ -28,7 +28,7 @@ public class MemberController {
     }
 
     @PostMapping(value = "/member_modify")
-    public String memberModify(HttpServletRequest request, MemberModifyForm form) {
+    public String memberModify(HttpServletRequest request, MemberForm form) {
         memberService.modifyMemberInfo(form.getBirth(), form.getName(), (Long) request.getSession().getAttribute("memberId"));
         return "redirect:/";
     }

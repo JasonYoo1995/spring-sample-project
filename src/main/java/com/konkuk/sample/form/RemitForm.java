@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberModifyForm {
-    private String name;
-    private String birth;
+public class RemitForm {
+    String accountNumber;
+    Long money;
 }

@@ -7,10 +7,6 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
     <div class="jumbotron">
-        <div>
-            <h2 style="margin-bottom: 10px" >회원 가입</h2>
-            <a style="margin-bottom: 20px" class="btn btn-lg btn-secondary" href="/sign_up">가입하기</a>
-        </div>
         <form th:action="@{/login}" th:object="${form}" method="post">
             <h2>로그인</h2>
             <div class="form-group">
@@ -19,6 +15,10 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        <div>
+            <h2 style="margin-top: 20px" >회원 가입</h2>
+            <a style="margin-top: 10px" class="btn btn-lg btn-secondary" href="/sign_up">가입하기</a>
+        </div>
     </div>
     <div th:replace="fragments/footer :: footer" />
 </div>

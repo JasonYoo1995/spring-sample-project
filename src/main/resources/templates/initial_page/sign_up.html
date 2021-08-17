@@ -4,6 +4,7 @@
 <body>
 <div class="container">
   <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+  <h2 style="margin-top: 20px; margin-bottom: 20px">회원 가입</h2>
   <form style="margin-top: 10px;" th:action="@{/sign_up}" th:object="${form}" method="post">
     <div class="form-group">
       <label>이름</label>
