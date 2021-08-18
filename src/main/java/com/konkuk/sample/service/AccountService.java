@@ -67,10 +67,12 @@ public class AccountService {
 
     // 송금
     public void remit(Long fromAccountId, String toAccountNumber, Long money, String content){
-        Account fromAccount = accountRepository.readOne(fromAccountId);
+        if(fromAccountId != null){
+            Account fromAccount = accountRepository.readOne(fromAccountId);
+            Remit withdrawRemit = fromAccount.withdraw(money, content);
+            remitService.createRemit(withdrawRemit);
+        }
         Account toAccount = accountRepository.readOneByAccountNumber(toAccountNumber);
-        Remit withdrawRemit = fromAccount.withdraw(money, content);
-        remitService.createRemit(withdrawRemit);
         Remit depositRemit = toAccount.deposit(money, content);
         remitService.createRemit(depositRemit);
     }

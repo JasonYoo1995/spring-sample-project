@@ -30,5 +30,4 @@ public class RemitRepository {
         em.persist(remit);
         return remit.getId();
     }
-
 }

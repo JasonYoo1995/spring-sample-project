@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+  <h2 style="margin-top: 20px; margin-bottom: 20px">ATM 입금</h2>
+  <form th:object="${remitForm}" method="post">
+    <div class="form-group">
+      <label>계좌 번호</label>
+      <input type="text" th:field="*{accountNumber}" class="form-control" placeholder="예: 110-382-777777" />
+    </div>
+    <div class="form-group">
+      <label>금액</label>
+      <input type="text" th:field="*{money}" class="form-control" placeholder="예: 100000" />
+    </div>
+    <button type="submit" class="btn btn-primary">입금</button>
+  </form>
+
+  <h2 style="margin-top: 20px; margin-bottom: 20px">내 계좌 목록</h2>
+  <div style="margin-top: 20px">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>은행</th>
+        <th>계좌 번호</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="account : ${accountList}">
+        <td th:text="${account.bankName}"></td>
+        <td th:text="${account.accountNumber}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div th:replace="fragments/footer :: footer"/>
+</div>
+</body>
+</html>
