@@ -76,12 +76,14 @@ public class MemberTest {
 		// GIVEN
 		String birth = "990909";
 		String name = "김건국";
+		int before = eventRepository.readAll().size();
 
 		// WHEN
 		memberService.signUp(birth, name);
 
 		// THEN
-		Assertions.assertThat(eventRepository.readAll().size()).isEqualTo(1);
+		int after = eventRepository.readAll().size();
+		Assertions.assertThat(after - before).isEqualTo(1);
 	}
 
 	@Test

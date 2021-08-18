@@ -1,6 +1,5 @@
 package com.konkuk.sample.service;
 
-import com.konkuk.sample.domain.Event;
 import com.konkuk.sample.domain.Member;
 import com.konkuk.sample.domain.MemberToMember;
 import com.konkuk.sample.repository.MemberRepository;

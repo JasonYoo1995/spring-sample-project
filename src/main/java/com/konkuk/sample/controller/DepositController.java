@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,7 +28,7 @@ public class DepositController {
         return "redirect:/atm";
     }
 
-    @PostMapping(value = "/event")
+    @PutMapping(value = "/event")
     public String showRemitList(HttpServletRequest request, EventForm eventForm, Model model) {
         Long memberId = (Long) request.getSession().getAttribute("memberId");
         Member member = memberService.getMember(memberId);
