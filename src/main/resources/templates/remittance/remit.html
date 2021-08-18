@@ -24,7 +24,7 @@
         <h2 style="margin-top: 20px; margin-bottom: 20px">회원 계좌 즐겨찾기</h2>
 
         <h4 style="margin-bottom: 15px;">회원 추가</h4>
-        <form th:action="@{/account/remit/{id}/register (id=${accountId})} " th:object="${memberForm}" class="form-inline" method="post">
+        <form th:action="@{/account/remit/{id}/register (id=${accountId})}" th:object="${memberForm}" class="form-inline" method="post">
             <div>
                 <label style="display: inline-block; margin-left: 5px">회원 이름</label>
                 <div style="display: inline-block; margin-left: 5px" class="dropdown">

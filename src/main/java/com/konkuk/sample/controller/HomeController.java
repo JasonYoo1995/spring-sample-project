@@ -1,9 +1,14 @@
 package com.konkuk.sample.controller;
 
 import com.konkuk.sample.domain.Account;
+import com.konkuk.sample.domain.Event;
+import com.konkuk.sample.domain.Member;
+import com.konkuk.sample.exception.NoAccountFoundException;
 import com.konkuk.sample.form.AccountWithCommaForm;
+import com.konkuk.sample.form.EventForm;
 import com.konkuk.sample.form.RemitForm;
 import com.konkuk.sample.service.AccountService;
+import com.konkuk.sample.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,6 +24,7 @@ import java.util.List;
 @Slf4j
 public class HomeController {
     private final AccountService accountService;
+    private final MemberService memberService;
 
     @GetMapping(value = "/home")
     public String showMenu() {
@@ -54,5 +60,28 @@ public class HomeController {
         RemitForm remitForm = new RemitForm();
         model.addAttribute("remitForm", remitForm);
         return "deposit/atm";
+    }
+
+    @GetMapping(value = "/event")
+    public String event(HttpServletRequest request, Model model) {
+        Long memberId = (Long) request.getSession().getAttribute("memberId");
+        List<Account> allAccounts = accountService.getAllAccounts(memberId);
+        Account account;
+        try{
+            account = allAccounts.get(0);
+        }
+        catch(Exception e){
+            throw new NoAccountFoundException("이벤트 보상을 받을 계좌가 존재하지 않습니다.");
+        }
+
+        Member member = memberService.getMember(memberId);
+        Event event = member.getEvent();
+        EventForm eventForm = new EventForm();
+        if(event.isFirstDeposit()) eventForm.setFirstDeposit(true);
+        if(event.isFirstRemit()) eventForm.setFirstRemit(true);
+        if(event.isFirstShare()) eventForm.setFirstShare(true);
+        model.addAttribute("eventForm", eventForm);
+
+        return "deposit/event";
     }
 }

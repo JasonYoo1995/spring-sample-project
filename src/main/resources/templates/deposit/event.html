@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <h2 style="margin-top: 20px; margin-bottom: 20px">이벤트 참여</h2>
+    <label>다음 이벤트에 참여하면, 무료로 일정 금액을 입금해드립니다.</label>
+    <div>
+        <button id="firstDepositBtn" style="margin: 5px" class="btn btn-lg btn-dark">첫 입금</button>
+        <button id="firstRemitBtn" style="margin: 5px" class="btn btn-lg btn-dark">첫 송금</button>
+        <button id="firstShareBtn" style="margin: 5px" class="btn btn-lg btn-dark">첫 공유</button>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script  th:inline="javascript">
+    var eventForm = [[${eventForm}]];
+    var event = ["firstDeposit", "firstRemit", "firstShare"];
+    event.forEach((val, idx) => {
+        if(eventForm[val]) $("#" + val + "Btn").attr('disabled', true);
+        $("#" + val + "Btn").on("click", function(){
+            $(this).attr('disabled', true);
+            eventForm[val] = true;
+            $.ajax({
+                url: "/event",
+                type: "POST",
+                data: eventForm,
+            });
+        });
+    });
+</script>
+</body>
+</html>
