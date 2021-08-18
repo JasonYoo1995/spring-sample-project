@@ -11,14 +11,15 @@ import java.time.format.DateTimeFormatter;
 @Setter
 public class RemitWithCommaForm {
     private String date;
-    private RemitType type;
+    private String type;
     private String money;
     private String content;
 
     public static RemitWithCommaForm createRemitWithComma(LocalDateTime date, RemitType type, Long money, String content){
         RemitWithCommaForm remit = new RemitWithCommaForm();
         convertDate(remit, date);
-        remit.setType(type);
+        if(type.equals(RemitType.WITHDRAW)) remit.setType("출금");
+        else if(type.equals(RemitType.DEPOSIT)) remit.setType("입금");
         convertMoney(remit, money, type);
         remit.setContent(content);
         return remit;
