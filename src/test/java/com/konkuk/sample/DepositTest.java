@@ -49,10 +49,7 @@ public class DepositTest {
     // 특정 회원에 대하여 3가지 이벤트 참여에 대한 보상 지급
     public void participateEventTestInDepositService(){
         // GIVEN
-        Event event = Event.createEvent();
-        eventRepository.create(event);
-
-        Member member = Member.createMember("990909", "김건국", event);
+        Member member = Member.createMember("990909", "김건국");
         memberRepository.create(member);
 
         Account account = Account.createAccount("신한", "110-123-456789", 10000L, member);

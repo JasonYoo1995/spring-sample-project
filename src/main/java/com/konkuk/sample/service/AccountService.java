@@ -69,11 +69,9 @@ public class AccountService {
     public void remit(Long fromAccountId, String toAccountNumber, Long money, String content){
         if(fromAccountId != null){
             Account fromAccount = accountRepository.readOne(fromAccountId);
-            Remit withdrawRemit = fromAccount.withdraw(money, content);
-            remitService.createRemit(withdrawRemit);
+            fromAccount.withdraw(money, content);
         }
         Account toAccount = accountRepository.readOneByAccountNumber(toAccountNumber);
-        Remit depositRemit = toAccount.deposit(money, content);
-        remitService.createRemit(depositRemit);
+        toAccount.deposit(money, content);
     }
 }

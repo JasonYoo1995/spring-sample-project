@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AccountWithComma {
+public class AccountWithCommaForm {
     private Long id;
     private String bankName; // 은행 이름
     private String accountNumber; // 계좌 번호
     private String balance; // 잔액
 
-    public static AccountWithComma createAccountWithComma(Long id, String bankName, String accountNumber, Long balance){
-        AccountWithComma account = new AccountWithComma();
+    public static AccountWithCommaForm createAccountWithComma(Long id, String bankName, String accountNumber, Long balance){
+        AccountWithCommaForm account = new AccountWithCommaForm();
         account.setId(id);
         account.setBankName(bankName);
         account.setAccountNumber(accountNumber);
@@ -20,7 +20,7 @@ public class AccountWithComma {
         return account;
     }
 
-    public static void convertBalance(AccountWithComma account, Long balance){
+    public static void convertBalance(AccountWithCommaForm account, Long balance){
         String newStringBalance = "";
         String stringBalance = String.valueOf(balance);
         int index = 0;

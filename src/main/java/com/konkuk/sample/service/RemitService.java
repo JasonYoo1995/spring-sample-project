@@ -25,9 +25,4 @@ public class RemitService {
     public List<Remit> getWithdrawList(Account account){
         return remitRepository.readByRemitType(account, RemitType.WITHDRAW);
     }
-    
-    // 입출금 내역 생성
-    public Long createRemit(Remit remit){
-        return remitRepository.create(remit);
-    }
 }

@@ -24,11 +24,12 @@ public class Event {
     private Member member; // 회원
 
     /** 생성 메서드 */
-    public static Event createEvent(){
+    public static Event createEvent(Member member){
         Event event = new Event();
         event.setFirstDeposit(false);
         event.setFirstRemit(false);
         event.setFirstShare(false);
+        event.setMember(member);
         return event;
     }
 }

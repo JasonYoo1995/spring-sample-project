@@ -1,8 +1,7 @@
 package com.konkuk.sample.controller;
 
 import com.konkuk.sample.domain.Account;
-import com.konkuk.sample.form.AccountForm;
-import com.konkuk.sample.form.AccountWithComma;
+import com.konkuk.sample.form.AccountWithCommaForm;
 import com.konkuk.sample.form.RemitForm;
 import com.konkuk.sample.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +35,9 @@ public class HomeController {
     public String showAccountList(HttpServletRequest request, Model model) {
         Long memberId = (Long) request.getSession().getAttribute("memberId");
         List<Account> accountList = accountService.getAllAccounts(memberId);
-        List<AccountWithComma> accountWithCommaList = new ArrayList<>();
+        List<AccountWithCommaForm> accountWithCommaList = new ArrayList<>();
         for(Account account : accountList){
-            accountWithCommaList.add(AccountWithComma.createAccountWithComma(
+            accountWithCommaList.add(AccountWithCommaForm.createAccountWithComma(
                     account.getId(), account.getBankName(), account.getAccountNumber(), account.getBalance())
             );
         }

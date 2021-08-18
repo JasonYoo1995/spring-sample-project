@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FrequentMember {
+public class FrequentMemberForm {
     String memberName;
     String accountNumber;
 }

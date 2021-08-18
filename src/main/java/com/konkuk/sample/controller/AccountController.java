@@ -40,9 +40,9 @@ public class AccountController {
     @GetMapping(value = "/account/retrieve/{id}")
     public String showRemitList(@PathVariable("id") Long accountId, Model model) {
         List<Remit> remitList = accountService.getRemitList(accountId);
-        List<RemitWithComma> RemitWithCommaList = new ArrayList<>();
+        List<RemitWithCommaForm> RemitWithCommaList = new ArrayList<>();
         for(Remit remit : remitList){
-            RemitWithComma remitWithComma = RemitWithComma.createRemitWithComma(remit.getDate(), remit.getType(), remit.getMoney(), remit.getContent());
+            RemitWithCommaForm remitWithComma = RemitWithCommaForm.createRemitWithComma(remit.getDate(), remit.getType(), remit.getMoney(), remit.getContent());
             RemitWithCommaList.add(remitWithComma);
         }
         model.addAttribute("remitList", RemitWithCommaList);
@@ -53,9 +53,9 @@ public class AccountController {
     @GetMapping(value = "/account/retrieve/{id}/deposit")
     public String showDepositRemitList(@PathVariable("id") Long accountId, Model model) {
         List<Remit> remitList = accountService.getDepositList(accountId);
-        List<RemitWithComma> RemitWithCommaList = new ArrayList<>();
+        List<RemitWithCommaForm> RemitWithCommaList = new ArrayList<>();
         for(Remit remit : remitList){
-            RemitWithComma remitWithComma = RemitWithComma.createRemitWithComma(remit.getDate(), remit.getType(), remit.getMoney(), remit.getContent());
+            RemitWithCommaForm remitWithComma = RemitWithCommaForm.createRemitWithComma(remit.getDate(), remit.getType(), remit.getMoney(), remit.getContent());
             RemitWithCommaList.add(remitWithComma);
         }
         model.addAttribute("remitList", RemitWithCommaList);
@@ -66,9 +66,9 @@ public class AccountController {
     @GetMapping(value = "/account/retrieve/{id}/withdraw")
     public String showWithdrawRemitList(@PathVariable("id") Long accountId, Model model) {
         List<Remit> remitList = accountService.getWithdrawList(accountId);
-        List<RemitWithComma> RemitWithCommaList = new ArrayList<>();
+        List<RemitWithCommaForm> RemitWithCommaList = new ArrayList<>();
         for(Remit remit : remitList){
-            RemitWithComma remitWithComma = RemitWithComma.createRemitWithComma(remit.getDate(), remit.getType(), remit.getMoney(), remit.getContent());
+            RemitWithCommaForm remitWithComma = RemitWithCommaForm.createRemitWithComma(remit.getDate(), remit.getType(), remit.getMoney(), remit.getContent());
             RemitWithCommaList.add(remitWithComma);
         }
         model.addAttribute("remitList", RemitWithCommaList);
@@ -92,13 +92,15 @@ public class AccountController {
         // 자주 송금하는 회원 계좌 목록 전달
         Long memberId = (Long) request.getSession().getAttribute("memberId");
         List<Member> registeredMemberList = memberService.getFrequentMembers(memberId);
-        List<FrequentMember> frequentMemberList = new ArrayList<>();
+        List<FrequentMemberForm> frequentMemberList = new ArrayList<>();
         for(Member member : registeredMemberList){
-            FrequentMember frequentMember = new FrequentMember();
+            FrequentMemberForm frequentMember = new FrequentMemberForm();
             frequentMember.setMemberName(member.getName());
             List<Account> accountList = accountService.getAllAccounts(member.getId());
-            frequentMember.setAccountNumber(accountList.get(0).getAccountNumber());
-            frequentMemberList.add(frequentMember);
+            if(!accountList.isEmpty()){
+                frequentMember.setAccountNumber(accountList.get(0).getAccountNumber());
+                frequentMemberList.add(frequentMember);
+            }
         }
         model.addAttribute("frequentMemberList", frequentMemberList);
 
@@ -133,5 +135,11 @@ public class AccountController {
             memberService.registerFrequentMember(fromMemberId, toMember.getId()); // 자주 송금하는 회원으로 추가
         }
         return "redirect:/account/remit/{id}";
+    }
+
+    @GetMapping(value = "/account/delete/{id}")
+    public String deleteAccount(@PathVariable("id") Long accountId, Model model) {
+        accountService.removeAccount(accountId);
+        return "redirect:/account";
     }
 }

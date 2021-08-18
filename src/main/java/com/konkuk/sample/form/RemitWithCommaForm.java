@@ -9,14 +9,14 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
-public class RemitWithComma {
+public class RemitWithCommaForm {
     private String date;
     private RemitType type;
     private String money;
     private String content;
 
-    public static RemitWithComma createRemitWithComma(LocalDateTime date, RemitType type, Long money, String content){
-        RemitWithComma remit = new RemitWithComma();
+    public static RemitWithCommaForm createRemitWithComma(LocalDateTime date, RemitType type, Long money, String content){
+        RemitWithCommaForm remit = new RemitWithCommaForm();
         convertDate(remit, date);
         remit.setType(type);
         convertMoney(remit, money, type);
@@ -24,11 +24,11 @@ public class RemitWithComma {
         return remit;
     }
 
-    public static void convertDate(RemitWithComma remit, LocalDateTime date){
+    public static void convertDate(RemitWithCommaForm remit, LocalDateTime date){
         remit.setDate(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString());
     }
 
-    public static void convertMoney(RemitWithComma remit, Long money, RemitType type){
+    public static void convertMoney(RemitWithCommaForm remit, Long money, RemitType type){
         String newStringMoney = "";
         String stringMoney = String.valueOf(money);
         int index = 0;

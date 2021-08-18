@@ -32,8 +32,7 @@ public class MemberService {
 
     // 생년월일과 이름을 입력하여 회원 가입
     public void signUp(String birth, String name){
-        Event event = Event.createEvent();
-        Member member = Member.createMember(birth, name, event);
+        Member member = Member.createMember(birth, name);
         memberRepository.create(member);
     }
 

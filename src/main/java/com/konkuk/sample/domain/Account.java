@@ -25,8 +25,15 @@ public class Account {
     @JoinColumn(name = "member_id") // Account 테이블에서 외래키 이름 생성
     private Member member; // 회원
 
-    @OneToMany(mappedBy = "account") // Remit 클래스의 필드들 중, Remit 테이블의 외래키에 대응되는 필드의 이름
+    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST) // Remit 클래스의 필드들 중, Remit 테이블의 외래키에 대응되는 필드의 이름
     private List<Remit> remitList = new ArrayList<>(); // 송금 내역
+
+    @PreRemove // ON DELETE SET NULL와 같은 효과
+    private void preRemoveRemits(){
+        for(Remit remit : remitList){
+            remit.setAccount(null);
+        }
+    }
 
     /** 생성 메서드 */
     public static Account createAccount(String bankName, String accountNumber, Long balance, Member member){

@@ -36,15 +36,7 @@ public class Member {
         Member member = new Member();
         member.setBirth(birth);
         member.setName(name);
-        return member;
-    }
-
-    public static Member createMember(String birth, String name, Event event){
-        Member member = new Member();
-        member.setBirth(birth);
-        member.setName(name);
-        member.setEvent(event);
-        event.setMember(member);
+        member.setEvent(Event.createEvent(member));
         return member;
     }
 }
