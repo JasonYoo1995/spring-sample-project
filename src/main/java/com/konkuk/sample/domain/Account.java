@@ -1,5 +1,6 @@
 package com.konkuk.sample.domain;
 
+import com.konkuk.sample.exception.ZeroBalanceException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -57,6 +58,7 @@ public class Account {
 
     // 출금
     public Remit withdraw(Long money, String content){
+        if(balance - money < 0) throw new ZeroBalanceException("잔액가 부족하여 출금할 수 없습니다.");
         balance -= money;
         List<Remit> remitList = this.getRemitList();
         Remit remit = Remit.createRemit(RemitType.WITHDRAW, money, content, this);

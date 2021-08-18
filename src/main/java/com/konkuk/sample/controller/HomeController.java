@@ -3,14 +3,13 @@ package com.konkuk.sample.controller;
 import com.konkuk.sample.domain.Account;
 import com.konkuk.sample.domain.Event;
 import com.konkuk.sample.domain.Member;
-import com.konkuk.sample.exception.NoAccountFoundException;
+import com.konkuk.sample.exception.AccountNotFoundException;
 import com.konkuk.sample.form.AccountWithCommaForm;
 import com.konkuk.sample.form.EventForm;
 import com.konkuk.sample.form.RemitForm;
 import com.konkuk.sample.service.AccountService;
 import com.konkuk.sample.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class HomeController {
     private final AccountService accountService;
     private final MemberService memberService;
@@ -71,7 +69,7 @@ public class HomeController {
             account = allAccounts.get(0);
         }
         catch(Exception e){
-            throw new NoAccountFoundException("이벤트 보상을 받을 계좌가 존재하지 않습니다.");
+            throw new AccountNotFoundException("이벤트 보상을 받을 계좌가 존재하지 않습니다.");
         }
 
         Member member = memberService.getMember(memberId);

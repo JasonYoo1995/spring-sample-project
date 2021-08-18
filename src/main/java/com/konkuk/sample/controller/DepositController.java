@@ -9,7 +9,6 @@ import com.konkuk.sample.service.DepositService;
 import com.konkuk.sample.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -29,11 +28,10 @@ public class DepositController {
     }
 
     @PutMapping(value = "/event")
-    public String showRemitList(HttpServletRequest request, EventForm eventForm, Model model) {
+    public void showRemitList(HttpServletRequest request, EventForm eventForm) {
         Long memberId = (Long) request.getSession().getAttribute("memberId");
         Member member = memberService.getMember(memberId);
         Account account = member.getAccountList().get(0);
         depositService.participateEvent(eventForm, memberId, account.getId());
-        return "redirect:/event";
     }
 }
