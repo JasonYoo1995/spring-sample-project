@@ -2,10 +2,7 @@ package com.konkuk.sample.controller;
 
 import com.konkuk.sample.domain.Account;
 import com.konkuk.sample.domain.Member;
-import com.konkuk.sample.form.AccountForm;
-import com.konkuk.sample.form.MemberForm;
-import com.konkuk.sample.form.FrequentMember;
-import com.konkuk.sample.form.RemitForm;
+import com.konkuk.sample.form.*;
 import com.konkuk.sample.service.AccountService;
 import com.konkuk.sample.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +26,13 @@ public class AccountController {
     public String showAccountList(HttpServletRequest request, Model model) {
         Long memberId = (Long) request.getSession().getAttribute("memberId");
         List<Account> accountList = accountService.getAllAccounts(memberId);
-        model.addAttribute("accounts", accountList);
+        List<AccountWithComma> accountWithCommaList = new ArrayList<>();
+        for(Account account : accountList){
+            accountWithCommaList.add(AccountWithComma.createAccountWithComma(
+                    account.getId(), account.getBankName(), account.getAccountNumber(), account.getBalance())
+            );
+        }
+        model.addAttribute("accounts", accountWithCommaList);
         return "remittance/account";
     }
 
@@ -60,10 +63,6 @@ public class AccountController {
         // 계좌 id 전달
         model.addAttribute("accountId", accountId);
 
-        // 모든 회원 목록 전달
-        List<Member> allMemberList = memberService.getAllMembers();
-        model.addAttribute("memberList", allMemberList);
-
         // 자주 송금하는 회원 계좌 목록 전달
         Long memberId = (Long) request.getSession().getAttribute("memberId");
         List<Member> registeredMemberList = memberService.getFrequentMembers(memberId);
@@ -76,6 +75,19 @@ public class AccountController {
             frequentMemberList.add(frequentMember);
         }
         model.addAttribute("frequentMemberList", frequentMemberList);
+
+        // 모든 회원 목록들 중 자주 송금하지 않는 회원 목록 전달
+        List<Member> allMemberList = memberService.getAllMembers();
+        for(Member registeredMember : registeredMemberList){
+            for (int i = 0; i < allMemberList.size(); i++) {
+                Member allMember = allMemberList.get(i);
+                if(allMember.getId() == registeredMember.getId()){
+                    allMemberList.remove(allMember);
+                    continue;
+                }
+            }
+        }
+        model.addAttribute("memberList", allMemberList);
 
         return "remittance/remit";
     }
