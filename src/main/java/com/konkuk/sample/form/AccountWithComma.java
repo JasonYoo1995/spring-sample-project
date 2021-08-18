@@ -16,11 +16,11 @@ public class AccountWithComma {
         account.setId(id);
         account.setBankName(bankName);
         account.setAccountNumber(accountNumber);
-        account.setBalanceWithComma(account, balance);
+        account.convertBalance(account, balance);
         return account;
     }
 
-    public static void setBalanceWithComma(AccountWithComma account, Long balance){
+    public static void convertBalance(AccountWithComma account, Long balance){
         String newStringBalance = "";
         String stringBalance = String.valueOf(balance);
         int index = 0;

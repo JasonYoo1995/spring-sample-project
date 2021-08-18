@@ -40,28 +40,20 @@ public class Account {
 
     /** 비즈니스 로직 */
     // 입금
-    public void deposit(Long money, String content){
+    public Remit deposit(Long money, String content){
         balance += money;
         List<Remit> remitList = this.getRemitList();
         Remit remit = Remit.createRemit(RemitType.DEPOSIT, money, content, this);
         remitList.add(remit);
+        return remit;
     }
 
     // 출금
-    public void withdraw(Long money, String content){
+    public Remit withdraw(Long money, String content){
         balance -= money;
         List<Remit> remitList = this.getRemitList();
         Remit remit = Remit.createRemit(RemitType.WITHDRAW, money, content, this);
         remitList.add(remit);
-    }
-
-    // 특정 회원의 특정 계좌에 대하여 잔액 표시
-    public Long getBalanceByAccount(){
-        return this.balance;
-    }
-
-    // 특정 계좌에 대하여 모든 입출금 내역 출력
-    public List<Remit> getRemitList(){
-        return this.remitList;
+        return remit;
     }
 }

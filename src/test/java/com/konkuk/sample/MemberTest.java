@@ -89,6 +89,7 @@ public class MemberTest {
 	// 모든 회원 목록을 조회
 	public void readAllTestInMemberRepository() {
 		// GIVEN
+		int before = memberRepository.readAll().size();
 		int num = 5;
 		Member members[] = new Member[num];
 		for (int i = 0; i < num; i++) {
@@ -100,9 +101,10 @@ public class MemberTest {
 		List<Member> readMembers = memberRepository.readAll();
 
 		// THEN
-		Assertions.assertThat(num).isEqualTo(readMembers.size());
+		int after = memberRepository.readAll().size();
+		Assertions.assertThat(num).isEqualTo(after - before);
 		for (int i = 0; i < num; i++) {
-			Assertions.assertThat(readMembers.get(i)).isEqualTo(members[i]);
+			Assertions.assertThat(readMembers.get(i + before)).isEqualTo(members[i]);
 		}
 	}
 

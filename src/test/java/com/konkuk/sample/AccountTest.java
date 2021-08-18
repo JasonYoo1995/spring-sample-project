@@ -213,8 +213,8 @@ public class AccountTest {
 		accountService.remit(fromAccountId, "110-123-000000", 888L, "송금 테스트");
 
 		// THEN
-		Assertions.assertThat(fromAccount.getBalanceByAccount()).isEqualTo(10000L-888L);
-		Assertions.assertThat(toAccount.getBalanceByAccount()).isEqualTo(50000L+888L);
+		Assertions.assertThat(fromAccount.getBalance()).isEqualTo(10000L-888L);
+		Assertions.assertThat(toAccount.getBalance()).isEqualTo(50000L+888L);
 		Assertions.assertThat(fromAccount.getRemitList().get(0).getType()).isEqualTo(RemitType.WITHDRAW);
 		Assertions.assertThat(toAccount.getRemitList().get(0).getType()).isEqualTo(RemitType.DEPOSIT);
 	}

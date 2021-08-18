@@ -3,9 +3,7 @@ package com.konkuk.sample.service;
 import com.konkuk.sample.domain.Account;
 import com.konkuk.sample.domain.Member;
 import com.konkuk.sample.domain.Remit;
-import com.konkuk.sample.domain.RemitType;
 import com.konkuk.sample.repository.AccountRepository;
-import com.konkuk.sample.repository.RemitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +18,7 @@ public class AccountService {
     @Autowired
     MemberService memberService;
     @Autowired
-    RemitRepository remitRepository;
+    RemitService remitService;
 
     // 특정 계좌 조회
     public Account getAccount(Long accountId){
@@ -58,20 +56,22 @@ public class AccountService {
     // 특정 계좌에 대하여 입금 내역만 출력
     public List<Remit> getDepositList(Long accountId){
         Account account = accountRepository.readOne(accountId);
-        return remitRepository.readByRemitType(account, RemitType.DEPOSIT);
+        return remitService.getDepositList(account);
     }
 
     // 특정 계좌에 대하여 출금 내역만 출력
     public List<Remit> getWithdrawList(Long accountId){
         Account account = accountRepository.readOne(accountId);
-        return remitRepository.readByRemitType(account, RemitType.WITHDRAW);
+        return remitService.getWithdrawList(account);
     }
 
     // 송금
     public void remit(Long fromAccountId, String toAccountNumber, Long money, String content){
         Account fromAccount = accountRepository.readOne(fromAccountId);
         Account toAccount = accountRepository.readOneByAccountNumber(toAccountNumber);
-        fromAccount.withdraw(money, content);
-        toAccount.deposit(money, content);
+        Remit withdrawRemit = fromAccount.withdraw(money, content);
+        remitService.createRemit(withdrawRemit);
+        Remit depositRemit = toAccount.deposit(money, content);
+        remitService.createRemit(depositRemit);
     }
 }

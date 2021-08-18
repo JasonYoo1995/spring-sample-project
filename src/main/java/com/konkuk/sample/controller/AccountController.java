@@ -2,6 +2,7 @@ package com.konkuk.sample.controller;
 
 import com.konkuk.sample.domain.Account;
 import com.konkuk.sample.domain.Member;
+import com.konkuk.sample.domain.Remit;
 import com.konkuk.sample.form.*;
 import com.konkuk.sample.service.AccountService;
 import com.konkuk.sample.service.MemberService;
@@ -50,6 +51,45 @@ public class AccountController {
         return "redirect:/account";
     }
 
+    @GetMapping(value = "/account/retrieve/{id}")
+    public String showRemitList(@PathVariable("id") Long accountId, Model model) {
+        List<Remit> remitList = accountService.getRemitList(accountId);
+        List<RemitWithComma> RemitWithCommaList = new ArrayList<>();
+        for(Remit remit : remitList){
+            RemitWithComma remitWithComma = RemitWithComma.createRemitWithComma(remit.getDate(), remit.getType(), remit.getMoney(), remit.getContent());
+            RemitWithCommaList.add(remitWithComma);
+        }
+        model.addAttribute("remitList", RemitWithCommaList);
+        model.addAttribute("account_id", accountId);
+        return "remittance/remit_list";
+    }
+
+    @GetMapping(value = "/account/retrieve/{id}/deposit")
+    public String showDepositRemitList(@PathVariable("id") Long accountId, Model model) {
+        List<Remit> remitList = accountService.getDepositList(accountId);
+        List<RemitWithComma> RemitWithCommaList = new ArrayList<>();
+        for(Remit remit : remitList){
+            RemitWithComma remitWithComma = RemitWithComma.createRemitWithComma(remit.getDate(), remit.getType(), remit.getMoney(), remit.getContent());
+            RemitWithCommaList.add(remitWithComma);
+        }
+        model.addAttribute("remitList", remitList);
+        model.addAttribute("account_id", accountId);
+        return "remittance/remit_list";
+    }
+
+    @GetMapping(value = "/account/retrieve/{id}/withdraw")
+    public String showWithdrawRemitList(@PathVariable("id") Long accountId, Model model) {
+        List<Remit> remitList = accountService.getWithdrawList(accountId);
+        List<RemitWithComma> RemitWithCommaList = new ArrayList<>();
+        for(Remit remit : remitList){
+            RemitWithComma remitWithComma = RemitWithComma.createRemitWithComma(remit.getDate(), remit.getType(), remit.getMoney(), remit.getContent());
+            RemitWithCommaList.add(remitWithComma);
+        }
+        model.addAttribute("remitList", remitList);
+        model.addAttribute("account_id", accountId);
+        return "remittance/remit_list";
+    }
+
     @GetMapping(value = "/account/remit/{id}")
     public String remittanceForm(HttpServletRequest request, @PathVariable("id") Long accountId, Model model) {
         // 송금 내용 폼
@@ -92,8 +132,14 @@ public class AccountController {
         return "remittance/remit";
     }
 
+    @PostMapping(value = "/account/remit/{id}")
+    public String remittance(@PathVariable("id") Long accountId, RemitForm remitForm) {
+        accountService.remit(accountId, remitForm.getAccountNumber(), remitForm.getMoney(), remitForm.getContent());
+        return "redirect:/account";
+    }
+
     @PostMapping(value = "/account/remit/{id}/register")
-    public String registerFrequentMember(HttpServletRequest request, @PathVariable("id") Long accountId, MemberForm registeredMemberForm, Model model) {
+    public String registerFrequentMember(HttpServletRequest request, MemberForm registeredMemberForm) {
         Long fromMemberId = (Long) request.getSession().getAttribute("memberId");
         Member toMember = memberService.getMemberByName(registeredMemberForm.getName());
         List<Account> accountList = accountService.getAllAccounts(toMember.getId());

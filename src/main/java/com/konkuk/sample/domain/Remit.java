@@ -38,5 +38,4 @@ public class Remit {
         account.getRemitList().add(remit);
         return remit;
     }
-
 }

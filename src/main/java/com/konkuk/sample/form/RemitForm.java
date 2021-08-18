@@ -8,4 +8,5 @@ import lombok.Setter;
 public class RemitForm {
     String accountNumber;
     Long money;
+    String content;
 }
