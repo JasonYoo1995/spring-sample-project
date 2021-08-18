@@ -58,7 +58,7 @@ public class Account {
 
     // 출금
     public Remit withdraw(Long money, String content){
-        if(balance - money < 0) throw new ZeroBalanceException("잔액가 부족하여 출금할 수 없습니다.");
+        if(balance - money < 0) throw new ZeroBalanceException("잔액이 부족하여 출금할 수 없습니다.");
         balance -= money;
         List<Remit> remitList = this.getRemitList();
         Remit remit = Remit.createRemit(RemitType.WITHDRAW, money, content, this);
