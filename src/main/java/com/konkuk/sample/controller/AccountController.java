@@ -138,7 +138,7 @@ public class AccountController {
         return "redirect:/account/remit/{id}";
     }
 
-    @DeleteMapping(value = "/account/delete/{id}")
+    @GetMapping(value = "/account/delete/{id}")
     public String deleteAccount(@PathVariable("id") Long accountId, Model model) {
         accountService.removeAccount(accountId);
         return "redirect:/account";
