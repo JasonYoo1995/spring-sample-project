@@ -10,7 +10,7 @@
     - 발생 가능한 예외 상황에 대하여 customized exception 객체를 만들어 사용했습니다.
 - **제작 문서**
     
-    [송금 서비스 (스프링 웹 사이트) 문서](https://www.notion.so/f642fa22803648afa3c477885f503c14)
+    [송금 서비스 (스프링 웹 사이트) 문서](https://jasonyoo95.notion.site/f642fa22803648afa3c477885f503c14)
     
 - **어려웠던 점 / 깨달은 점**
     - Persistence Context(영속성 컨텍스트)의 동작 원리를 생각하며 코딩해야 했습니다.
